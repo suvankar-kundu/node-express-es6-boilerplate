@@ -1,0 +1,15 @@
+{
+    "presets": [
+        [
+            "env",
+            {
+                "targets": {
+                    "node": "8.9.4"
+                },
+                "include": [
+                    "babel-plugin-transform-es2015-classes"
+                ]
+            }
+        ]
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "origin": [
+        "http://localhost:3030",
+        "http://localhost:4200"
+    ],
+    "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+    ],
+    "allowedHeaders": [
+        "Content-Type",
+        "Authorization"
+    ]
+}
