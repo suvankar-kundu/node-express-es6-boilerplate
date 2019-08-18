@@ -13,6 +13,19 @@
   },
   "author": "Suvankar Kundu",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suvankar-kundu/node-express-es6-boilerplate.git"
+  },
+  "keywords": [
+    "nodejs",
+    "boilerplate",
+    "es6",
+    "es2015",
+    "babel",
+    "express",
+    "lint"
+  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",
