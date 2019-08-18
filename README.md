@@ -34,9 +34,21 @@ Change `name, version, description, repository, author, bugs, homepage`
 6. Update packages    
 `npm update`    
 
-&nbsp;
-
 ```
+
+Command
+--------
+1. Run `npm run build`    
+Transpile ES6 to **dist** directory. 
+
+2. Run `npm run start`    
+This will start the application with specific port
+
+3.Run `npm run lint`    
+This will check eslint error
+
+4.Run `npm run test`    
+This will run all the test cases
 
 License
 -------
