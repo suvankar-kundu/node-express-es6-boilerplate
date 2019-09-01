@@ -1,76 +1,75 @@
-import * as HttpStatus from '../../common/lib/httpStatusCodes';
 import ApiController from './apiController';
 
 class RepositoryOfTController extends ApiController {
-  constructor (repositoryOfT) {
+  constructor(repositoryOfT) {
     super();
     this._repositoryOfT = repositoryOfT;
   }
 
-  get Repository () {
+  get Repository() {
     return this._repositoryOfT;
   }
 
-  async get (req, res) {
+  async get(req, res) {
     try {
       const entities = await this.Repository.get(req.query);
-      res.json(entities);
-    } catch (err) {
-      res.status(HttpStatus.InternalServerError).json(err);
+      this.httpOk(res, entities);
+    } catch (error) {
+      this.httpInternalServerError(res, error.message);
     }
   }
 
-  getById (req, res) {
-    res.json(req._entity);
+  getById(req, res) {
+    this.httpOk(res, req._entity);
   }
 
-  async post (req, res) {
+  async post(req, res) {
     const newEntity = new this.Repository.Model(req.body);
     try {
       await this.Repository.create(newEntity);
-      res.status(HttpStatus.Created).json(newEntity);
-    } catch (err) {
-      res.status(HttpStatus.InternalServerError).json(err);
+      this.httpCreated(res, newEntity);
+    } catch (error) {
+      this.httpInternalServerError(res, error.message);
     }
   }
 
-  async put (req, res) {
+  async put(req, res) {
     try {
       const updatedEntity = await this.Repository.update(req._entity, req.body);
-      res.json(updatedEntity);
-    } catch (err) {
-      res.status(HttpStatus.InternalServerError).json(err);
+      this.httpOk(res, updatedEntity);
+    } catch (error) {
+      this.httpInternalServerError(res, error.message);
     }
   }
 
-  async upsert (req, res) {
+  async upsert(req, res) {
     try {
       const updatedEntity = await this.Repository.update(req._entity, req.body, { upsert: true });
-      res.json(updatedEntity);
-    } catch (err) {
-      res.status(HttpStatus.InternalServerError).json(err);
+      this.httpOk(res, updatedEntity);
+    } catch (error) {
+      this.httpInternalServerError(res, error.message);
     }
   }
 
-  async patch (req, res) {
+  async patch(req, res) {
     try {
       const updatedEntity = await this.Repository.patch(req._entity, req.body);
-      res.json(updatedEntity);
-    } catch (err) {
-      res.status(HttpStatus.InternalServerError).json(err);
+      this.httpOk(res, updatedEntity);
+    } catch (error) {
+      this.httpInternalServerError(res, error.message);
     }
   }
 
-  async remove (req, res) {
+  async remove(req, res) {
     try {
       await this.Repository.remove(req._entity);
-      res.status(HttpStatus.NoContent).send('Deleted');
-    } catch (err) {
-      res.status(HttpStatus.InternalServerError).json(err);
+      this.httpNotContent(res);
+    } catch (error) {
+      this.httpInternalServerError(res, error.message);
     }
   }
 
-  async search (req, res) {
+  async search(req, res) {
     let query = this.Repository._get(req.body);
     if (req.query && req.query.orderBy) {
       query = query.sort(
@@ -89,7 +88,7 @@ class RepositoryOfTController extends ApiController {
           , {})
       );
     }
-    res.json(await query);
+    this.httpOk(res, await query);
   }
 }
 

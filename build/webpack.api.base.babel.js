@@ -23,6 +23,7 @@ export default {
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: '[name].js',
+        libraryTarget: 'commonjs2'
     },
     module: {
         loaders: [
