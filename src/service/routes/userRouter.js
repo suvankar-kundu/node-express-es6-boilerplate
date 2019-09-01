@@ -1,8 +1,13 @@
 import BaseRouter from './baseRouter';
 import { authenticated } from '../middleware/middleware-security';
-
+/**
+ * @swagger
+ * /users:
+ *    get:
+ *      description: This should return all users
+ */
 class UserRouter extends BaseRouter {
-  constructor (
+  constructor(
     userRepository,
     userController
   ) {
