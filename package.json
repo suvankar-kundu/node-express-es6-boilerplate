@@ -6,7 +6,7 @@
   "scripts": {
     "build": "./node_modules/.bin/webpack --config ./build/webpack.api.base.babel.js",
     "clean": "./node_modules/.bin/rimraf ./dist",
-    "lint": "./node_modules/.bin/eslint --color --format stylish src",
+    "lint": "./node_modules/.bin/eslint --color --format stylish ./src --fix",
     "prebuild": "npm run clean",
     "start": "./node_modules/.bin/babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -30,8 +30,12 @@
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
-    "eslint": "^4.17.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint": "^6.3.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "file-loader": "^1.1.6",
     "json-loader": "^0.5.7",
     "rimraf": "^2.6.2",

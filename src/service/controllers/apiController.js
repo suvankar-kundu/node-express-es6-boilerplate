@@ -1,7 +1,7 @@
 class ApiController {
-    constructor() {
+  constructor () {
 
-    }
+  }
 }
 
 export default ApiController;

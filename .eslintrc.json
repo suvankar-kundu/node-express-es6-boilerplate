@@ -1,17 +1,22 @@
 {
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
     "extends": [
+        "standard",
         "eslint:recommended",
         "plugin:import/errors",
         "plugin:import/warnings"
     ],
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module"
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
     },
-    "env": {
-        "es6": true,
-        "node": true,
-        "mocha": true
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
     },
     "rules": {
         "constructor-super": "error",

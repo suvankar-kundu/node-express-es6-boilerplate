@@ -2,33 +2,40 @@ import express from 'express';
 import middlewareLogging from './middleware/middleware-logger';
 import middlewarePassport from './middleware/middleware-passport';
 import middlewareRequestParser from './middleware/middleware-request-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../../config/doc/swagger.json';
 
-import CorsConfig from '../../config/development/cors.json';
-import SecurityConfig from '../../config/development/security.json';
+// #region Common components
+import ModelOfTRepository from '../data/repositories/modelOfTRepository';
 import middlewareCors from './middleware/middleware-cors';
-var swaggerUi = require('swagger-ui-express'),
-    swaggerDocument = require('../../config/doc/swagger.json');
+// #endregion
 
+// #region User
+import UserModel from '../data/models/userModel';
+import UserController from '../service/controllers/userController';
+import UserRouter from '../service/routes/userRouter';
+// #endregion
 
-const PORT = process.env.PORT || 5000;
-const app = express();
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-export default function (
-    logger,
-    userRepository,
-    userRouter
+export default async function (
+  logger,
+  dbConnection,
+  corsConfig,
+  securityConfig
 ) {
-    middlewareLogging(app, logger);
-    middlewareRequestParser(app);
-    middlewarePassport(app, userRepository, SecurityConfig);
-    middlewareCors(app, CorsConfig);
+  const app = express();
 
-    const apiRouter = express.Router();
-    apiRouter.use('/user', userRouter.Router);
-    app.use('/api', apiRouter);
+  const userRepository = new ModelOfTRepository(UserModel(dbConnection));
+  const userController = new UserController(userRepository, logger);
+  const userRouter = new UserRouter(userRepository, userController);
 
-    app.listen(PORT, () => {
-        logger.info(`Server started on port ${PORT}`);
-    });
+  middlewareLogging(app, logger);
+  middlewareRequestParser(app);
+  middlewarePassport(app, userRepository, securityConfig);
+  middlewareCors(app, corsConfig);
+
+  const apiRouter = express.Router();
+  apiRouter.use('/user', userRouter.Router);
+  app.use('/api', apiRouter);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  return app;
 }
