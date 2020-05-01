@@ -7,19 +7,32 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug API",
-            "program": "${workspaceRoot}/src/index.js",
-            "cwd": "${workspaceRoot}/src",
-            "stopOnEntry": false,
+            "name": "[Test Service] Debug API",
+            "runtimeExecutable": "${workspaceRoot}\\node_modules\\.bin\\babel-node",
+            "program": "${workspaceRoot}\\src\\index.js",
+            "cwd": "${workspaceRoot}",
             "env": {
                 "PORT": "8080",
                 "NODE_ENV": "development"
             },
-            "runtimeArgs": [
-                "--nolazy"
-            ],
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
             "outputCapture": "std"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "[Test Service] Jest Current File",
+            "program": "${workspaceRoot}\\node_modules\\.bin\\jest",
+            "args": [
+                "${fileBasenameNoExtension}",
+                "--config",
+                "jest.config.json"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "windows": {
+                "program": "${workspaceFolder}\\node_modules\\jest\\bin\\jest"
+            }
         }
     ]
 }

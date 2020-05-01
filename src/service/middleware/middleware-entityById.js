@@ -1,4 +1,4 @@
-import * as HttpStatus from '../../common/lib/httpStatusCodes';
+import * as HttpStatus from "../../lib/constants/httpStatus";
 
 export default function (repositiryOfT) {
   return async function (req, res, next) {
@@ -8,7 +8,8 @@ export default function (repositiryOfT) {
         req._entity = entity;
         next();
       } else {
-        res.status(HttpStatus.NotFound)
+        res
+          .status(HttpStatus.NotFound)
           .send(`Entity (ID: ${req.params.id}) not found`);
       }
     } catch (err) {

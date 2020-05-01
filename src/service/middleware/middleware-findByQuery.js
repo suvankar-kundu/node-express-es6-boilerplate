@@ -1,17 +1,20 @@
-import * as HttpStatus from '../../common/lib/httpStatusCodes';
+import * as HttpStatus from "../../lib/constants/httpStatus";
 
 export default function (repositiryOfT, props = []) {
   return async function (req, res, next) {
     try {
-      const entity = await repositiryOfT.findOne(props.reduce((acc, curr) => {
-        acc[curr] = req.body[curr];
-        return acc;
-      }, {}));
+      const entity = await repositiryOfT.findOne(
+        props.reduce((acc, curr) => {
+          acc[curr] = req.body[curr];
+          return acc;
+        }, {})
+      );
       if (entity) {
         req._entity = entity;
         next();
       } else {
-        res.status(HttpStatus.NotFound)
+        res
+          .status(HttpStatus.NotFound)
           .send(`Entity (query: ${JSON.stringify(req._query)}) not found`);
       }
     } catch (err) {

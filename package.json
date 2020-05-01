@@ -9,8 +9,10 @@
     "lint": "./node_modules/.bin/eslint --color --format stylish ./src --fix",
     "prebuild": "npm run clean",
     "start": "./node_modules/.bin/babel-node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "swagger": "./node_modules/.bin/swagger-jsdoc -d  ./config/doc/swaggerDef.js -o openapi.json"
+    "test": "./node_modules/.bin/jest --config jest.config.json",
+    "test-watch": "npm run test -- --watch",
+    "test-coverage": "npm run test -- --coverage",
+    "swagger": "./node_modules/.bin/swagger-jsdoc -d  ./src/swagger/index.js -o openapi.json"
   },
   "author": "Suvankar Kundu",
   "license": "MIT",
@@ -50,6 +52,7 @@
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "express": "4.16.2",
+    "mongodb": "^3.5.2",
     "mongoose": "5.0.9",
     "morgan": "1.9.0",
     "passport": "0.4.0",

@@ -1,39 +1,41 @@
-import express from 'express';
-import middlewareLogging from './middleware/middleware-logger';
-import middlewarePassport from './middleware/middleware-passport';
-import middlewareRequestParser from './middleware/middleware-request-parser';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '../../openapi.json';
-// #region Common components
-import ModelOfTRepository from '../data/repositories/modelOfTRepository';
-import middlewareCors from './middleware/middleware-cors';
-// #endregion
+import express from "express";
+import middlewareHttpLogging from "../lib/api/middlewares/middleware-logger";
+import { middlewareRequestParserURLEncode } from "../lib/api/middlewares/middleware-request-parser";
+import middlewareCors from "../lib/api/middlewares/middleware-cors";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../../openapi.json";
+import MongoRepository from "../lib/repositories/mongo-repository";
+import UserManager from "../logic/userManager";
+import UserController from "./controllers/userController";
+import UserRouter from "./routes/userRouter";
 
-// #region User
-import UserModel from '../data/models/userModel';
-import UserController from '../service/controllers/userController';
-import UserRouter from '../service/routes/userRouter';
-// #endregion
-
-export default async function (
-  logger,
-  dbConnection,
+export default async function Application(
+  authenticationDb,
+  cacheProvider,
+  cacheConfig,
   corsConfig,
-  securityConfig
+  securityConfig,
+  logger
 ) {
-  const app = express();
-  const userRepository = new ModelOfTRepository(UserModel(dbConnection));
-  const userController = new UserController(userRepository, logger);
-  const userRouter = new UserRouter(userRepository, userController);
-
-  middlewareLogging(app, logger);
-  middlewareRequestParser(app);
-  middlewarePassport(app, userRepository, securityConfig);
+  const application = express();
+  const userRepository = new MongoRepository(authenticationDb, "User");
+  const userStore = cacheProvider.createStore(
+    cacheConfig.stores.users.identifier
+  );
+  const userManager = new UserManager(userRepository, userStore);
+  const userController = new UserController(userManager, logger);
+  const userRouter = UserRouter(userController);
+  middlewareHttpLogging(application, logger);
+  middlewareRequestParserURLEncode(application);
   middlewareCors(app, corsConfig);
 
   const apiRouter = express.Router();
-  apiRouter.use('/user', userRouter.Router);
-  app.use('/api', apiRouter);
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
+  apiRouter.use("/user", userRouter.Router);
+  app.use("/api", apiRouter);
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument, { explorer: true })
+  );
   return app;
 }

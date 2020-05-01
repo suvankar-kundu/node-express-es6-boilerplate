@@ -1,42 +1,23 @@
-import ApiController from './apiController';
-import { getToken } from '../middleware/middleware-passport';
+import ApiController from "../../lib/api/controllers/index";
 
 class UserController extends ApiController {
-  constructor(userRepository, logger) {
-    super();
-    this._userReposotory = userRepository;
+  constructor(userManager, logger) {
+    super("App", logger);
+    this._userManager = userManager;
+    this._logger = logger;
   }
 
-  get UserReposotory() {
-    return this._userReposotory;
+  get UserManager() {
+    return this._userManager;
   }
 
   async create(req, res) {
     try {
-      const newUser = await this.UserReposotory.create(req.body);
-      this.httpCreated(res, Object.assign({}, newUser.toJSON(), { password: null }));
-    } catch (error) {
-      this.httpInternalServerError(res, error.message);
-    }
-  }
-
-  async signIn(req, res) {
-    try {
-      const user = await this.UserReposotory.getById(req.body.userName);
-      if (user && (user.isActive === true) && (user.password === req.body.password)) {
-        const token = getToken(user);
-        this.httpOk(res, Object.assign({}, user.toJSON(), { token, password: null }));
-      } else {
-        this.httpNotFound(res, 'User not active/registered/wrong password');
-      }
-    } catch (error) {
-      this.httpInternalServerError(res, error.message);
-    }
-  }
-
-  async version(req, res) {
-    try {
-      this.httpOk(res, 'Api version 1');
+      const newUser = await this.UserManager.createUser(req.body);
+      this.httpCreated(
+        res,
+        Object.assign({}, newUser.toJSON(), { password: null })
+      );
     } catch (error) {
       this.httpInternalServerError(res, error.message);
     }

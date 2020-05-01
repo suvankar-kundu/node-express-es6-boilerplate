@@ -1,0 +1,61 @@
+{
+  "application": {
+    "port": 4101
+  },
+  "db": {
+    "authentication": {
+      "connection": "mongodb://localhost:27017/auth",
+      "options": {
+        "ignoreUndefined": true,
+        "appname": "order-svc"
+      }
+    }
+  },
+  "cache": {
+    "identifier": "oms:boots:retail",
+    "connection": {
+      "host": "localhost",
+      "port": "6397",
+      "options": {
+        "db": 1
+      }
+    },
+    "stores": {
+      "orders": {
+        "identifier": "orders",
+        "policy": {
+          "expire": 1800
+        }
+      },
+      "users": {
+        "identifier": "users",
+        "policy": {
+          "expire": 1800
+        }
+      }
+    }
+  },
+  "cors": {
+    "origin": ["http://localhost:3030", "http://localhost:4200"],
+    "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    "allowedHeaders": ["Content-Type", "Authorization"]
+  },
+  "log": {
+    "console": {
+      "enabled": true,
+      "level": "debug"
+    },
+    "file": {
+      "enabled": true,
+      "filename": "/logs/%DATE%-application.log",
+      "datePattern": "YYYY-MM-DD",
+      "level": "info"
+    }
+  },
+  "security": {
+    "jwt": {
+      "secret": "stringbees-secret",
+      "issuer": "www.mockapi.com"
+    }
+  }
+}
