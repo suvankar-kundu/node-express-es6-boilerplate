@@ -4,7 +4,7 @@
   },
   "db": {
     "authentication": {
-      "connection": "mongodb://localhost:27017/auth",
+      "connection": "mongodb://localhost:27017/user",
       "options": {
         "ignoreUndefined": true,
         "appname": "order-svc"
@@ -15,7 +15,7 @@
     "identifier": "oms:boots:retail",
     "connection": {
       "host": "localhost",
-      "port": "6397",
+      "port": "6379",
       "options": {
         "db": 1
       }
@@ -47,7 +47,7 @@
     },
     "file": {
       "enabled": true,
-      "filename": "/logs/%DATE%-application.log",
+      "filename": "../logs/%DATE%-application.log",
       "datePattern": "YYYY-MM-DD",
       "level": "info"
     }

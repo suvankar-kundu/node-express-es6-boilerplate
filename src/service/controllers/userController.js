@@ -22,6 +22,9 @@ class UserController extends ApiController {
       this.httpInternalServerError(res, error.message);
     }
   }
+  async test(req, res) {
+    this.httpOk(res, { message: "up" });
+  }
 }
 
 export default UserController;

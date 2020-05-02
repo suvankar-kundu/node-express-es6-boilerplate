@@ -8,6 +8,6 @@ export function middlewareRequestParserURLEncode(app) {
   );
 }
 
-export function middlewareRequestParserJSON(app, options) {
-  app.use(json(options));
+export function middlewareRequestParserJSON(app) {
+  app.use(json());
 }

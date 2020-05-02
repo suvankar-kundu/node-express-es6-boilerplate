@@ -1,8 +1,8 @@
 import appLication from "./service/app";
 import config from "../config/local/config.json";
-import appLogger from "../src/lib/loggers/winston/index";
-import dbConnect from "../src/lib/db/mongodb/index";
-import { connect as cacheConnect } from "../src/lib/cache/redis/index";
+import createLogger from "../src/lib/loggers/winston/index";
+import { connect as dbConnect } from "../src/lib/db/mongodb/index";
+import connect from "../src/lib/cache/redis/index";
 
 const {
   db: dbConfig,
@@ -13,11 +13,10 @@ const {
 } = config;
 
 const PORT = process.env.PORT || 5000;
-const logger = appLogger(logConfig);
-
+const logger = createLogger(logConfig);
 Promise.all([
-  dbConnect(dbConfig),
-  cacheConnect(
+  dbConnect(dbConfig.authentication, logger),
+  connect(
     cacheConfig.identifier,
     cacheConfig.connection.host,
     cacheConfig.connection.port,
@@ -39,9 +38,8 @@ Promise.all([
         logger
       );
       const server = app.listen(PORT, () => {
-        const { address, port } = this.address();
-        logger.info({
-          message: `process started successfully on ${address}:${port}.`,
+        logger.debug({
+          message: `process started successfully on port:${PORT}.`,
         });
       });
 

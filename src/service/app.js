@@ -1,6 +1,9 @@
 import express from "express";
 import middlewareHttpLogging from "../lib/api/middlewares/middleware-logger";
-import { middlewareRequestParserURLEncode } from "../lib/api/middlewares/middleware-request-parser";
+import {
+  middlewareRequestParserURLEncode,
+  middlewareRequestParserJSON,
+} from "../lib/api/middlewares/middleware-request-parser";
 import middlewareCors from "../lib/api/middlewares/middleware-cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../../openapi.json";
@@ -24,18 +27,19 @@ export default async function Application(
   );
   const userManager = new UserManager(userRepository, userStore);
   const userController = new UserController(userManager, logger);
-  const userRouter = UserRouter(userController);
+  const userRouter = new UserRouter(userController);
   middlewareHttpLogging(application, logger);
   middlewareRequestParserURLEncode(application);
-  middlewareCors(app, corsConfig);
+  middlewareRequestParserJSON(application);
+  middlewareCors(application, corsConfig);
 
   const apiRouter = express.Router();
   apiRouter.use("/user", userRouter.Router);
-  app.use("/api", apiRouter);
-  app.use(
+  application.use("/api", apiRouter);
+  application.use(
     "/api-docs",
     swaggerUi.serve,
     swaggerUi.setup(swaggerDocument, { explorer: true })
   );
-  return app;
+  return application;
 }

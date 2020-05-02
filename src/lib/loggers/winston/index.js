@@ -13,9 +13,9 @@ export default function createLogger(logConfig, DEFAULT_LABEL = "Application") {
     if (/error/.test(info.level)) {
       return `${info.timestamp}-${info.level}:${info.label || DEFAULT_LABEL}:${
         info.message
-      },${info.error},${info.error instanceof Error ? info.error.message : ""}`;
+      },${info.error instanceof Error ? info.error.message : ""}`;
     } else {
-      `${info.timestamp}-${info.level}:${info.label || DEFAULT_LABEL}:${
+      return `${info.timestamp}-${info.level}:${info.label || DEFAULT_LABEL}:${
         info.message
       }`;
     }
@@ -33,7 +33,7 @@ export default function createLogger(logConfig, DEFAULT_LABEL = "Application") {
   if (logConfig.file && logConfig.file.enabled === true) {
     logger.add(
       new DailyRotateFileTransport({
-        level: logConfig.console.level || "info",
+        level: logConfig.file.level || "info",
         filename: logConfig.file.filename,
         datePattern: logConfig.file.datePattern || "YYYY-MM-DD",
         format: combine(timestamp(), applicationLogFormat),

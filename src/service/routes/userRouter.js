@@ -8,9 +8,9 @@ import BaseRouter from "./baseRouter";
 class UserRouter extends BaseRouter {
   constructor(userController) {
     super(userController);
-    this.Router.route("/").post(async (req, res) =>
-      this.Controller.create(req, res)
-    );
+    this.Router.route("/")
+      .post(async (req, res) => this.Controller.create(req, res))
+      .get(async (req, res) => this.Controller.test(req, res));
   }
 }
 

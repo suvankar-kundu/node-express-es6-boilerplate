@@ -82,14 +82,14 @@ export class CacheProvider extends EventEmitter {
       this._redisClient.quit((error, result) => {
         if (error) {
           this._logger.log({
-            level: "Error",
+            level: "error",
             label: this._logLabel,
             message: "An error occurred while closing cache provider",
             error,
           });
         } else {
           this._logger.log({
-            level: "INFO",
+            level: "info",
             label: this._logLabel,
             message: "provider successfully closed",
             data: result,
@@ -123,7 +123,7 @@ export class CacheProvider extends EventEmitter {
     this._isConnected = true;
     this._isReady = true;
     this._logger.log({
-      level: "INFO",
+      level: "info",
       label: this._logLabel,
       message: "Provider is ready",
     });
@@ -133,7 +133,7 @@ export class CacheProvider extends EventEmitter {
     this._isConnected = true;
     this._isReady = false;
     this._logger.log({
-      level: "INFO",
+      level: "info",
       label: this._logLabel,
       message: "Provider connect to redis",
     });
@@ -143,7 +143,7 @@ export class CacheProvider extends EventEmitter {
     this._isConnected = false;
     this._isReady = false;
     this._logger.log({
-      level: "ERROR",
+      level: "error",
       label: this._logLabel,
       message: `Provider disconnected,Attempting to reconnect #${attempt} ${delay} ms.`,
       error,
@@ -154,7 +154,7 @@ export class CacheProvider extends EventEmitter {
     this._isConnected = false;
     this._isReady = false;
     this._logger.log({
-      level: "ERROR",
+      level: "error",
       label: this._logLabel,
       message: "Provider encountered an error",
     });
@@ -164,7 +164,7 @@ export class CacheProvider extends EventEmitter {
     this._isConnected = false;
     this._isReady = false;
     this._logger.log({
-      level: "ERROR",
+      level: "error",
       label: this._logLabel,
       message: `Provider closed connection with redis`,
     });

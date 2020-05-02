@@ -31,7 +31,9 @@ export async function connect(dbConfig, logger, label = "DB") {
       mongoOptions.sslCert = fs.readFileSync(mongoOptions.sslCert);
     }
     logger.log({ level: "info", label: label, message: "Connecting database" });
-    const client = await MongoClient.connect(dbConfig.connection, mongoOptions);
+    const client = await MongoClient.connect(dbConfig.connection, {
+      useNewUrlParser: true,
+    });
     const database = client.db();
     logger.log({
       level: "info",

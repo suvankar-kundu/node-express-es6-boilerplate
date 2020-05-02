@@ -57,7 +57,8 @@
     "morgan": "1.9.0",
     "passport": "0.4.0",
     "passport-jwt": "3.0.1",
-    "winston": "2.4.0",
-    "winston-daily-rotate-file": "1.7.2"
+    "redis": "^3.0.2",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   }
 }
