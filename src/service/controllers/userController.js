@@ -28,7 +28,24 @@ class UserController extends ApiController {
   }
   async test(req, res) {
     try {
-      const result = await this.UserRepo.findAll();
+      // const result = await this.UserRepo.insertOne({
+      //   first_name: "subho",
+      //   last_name: "kundu",
+      //   job_title: "teacher",
+      //   salary: "200",
+      //   notes: "test",
+      // });
+      const result = await this.UserRepo.rawQuery(
+        "SELECT ?? FROM ?? WHERE id = ?",
+        [["first_name", "salary"], "employee", "1"]
+      );
+      // const result = await this.UserRepo.updateOne(
+      //   {
+      //     first_name: "test",
+      //     last_name: "test2",
+      //   },
+      //   1
+      // );
       this.httpOk(res, { data: result });
     } catch (error) {
       this.httpInternalServerError(res, error.message);
