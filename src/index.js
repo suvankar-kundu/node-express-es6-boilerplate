@@ -2,6 +2,7 @@ import appLication from "./service/app";
 import config from "../config/local/config.json";
 import createLogger from "../src/lib/loggers/winston/index";
 import { connect as dbConnect } from "../src/lib/db/mongodb/index";
+import { connect as mysqlConnect } from "../src/lib/db/mysql/index";
 import connect from "../src/lib/cache/redis/index";
 
 const {
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 5000;
 const logger = createLogger(logConfig);
 Promise.all([
   dbConnect(dbConfig.authentication, logger),
+  mysqlConnect(dbConfig.mysql, logger),
   connect(
     cacheConfig.identifier,
     cacheConfig.connection.host,
@@ -27,6 +29,7 @@ Promise.all([
   .then(
     async ([
       { database: authenticationDb, client: authenticationDbClient },
+      mysqlConnection,
       cacheProvider,
     ]) => {
       const app = await appLication(
@@ -35,6 +38,7 @@ Promise.all([
         cacheConfig,
         corsConfig,
         securityConfig,
+        mysqlConnection,
         logger
       );
       const server = app.listen(PORT, () => {

@@ -1,14 +1,18 @@
 import ApiController from "../../lib/api/controllers/index";
 
 class UserController extends ApiController {
-  constructor(userManager, logger) {
+  constructor(userManager, logger, mysqlUserRepo) {
     super("App", logger);
     this._userManager = userManager;
     this._logger = logger;
+    this._mysqlUserRepo = mysqlUserRepo;
   }
 
   get UserManager() {
     return this._userManager;
+  }
+  get UserRepo() {
+    return this._mysqlUserRepo;
   }
 
   async create(req, res) {
@@ -23,7 +27,12 @@ class UserController extends ApiController {
     }
   }
   async test(req, res) {
-    this.httpOk(res, { message: "up" });
+    try {
+      const result = await this.UserRepo.findAll();
+      this.httpOk(res, { data: result });
+    } catch (error) {
+      this.httpInternalServerError(res, error.message);
+    }
   }
 }
 
